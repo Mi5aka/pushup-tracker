@@ -1,0 +1,15 @@
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.env
+.env.*
+*.local
+*.log
+*.tmp
+*.swp
+*.pem
+*.key
+pushup-history-*.json
+__pycache__/
+*.pyc

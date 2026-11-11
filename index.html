@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a121e">
+  <title>Push-up tracker</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
+  <link rel="stylesheet" href="styles.css">
+  <script src="translations.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="page-header">
+    <div class="header-top">
+      <h1 data-i18n="title">Push-up tracker</h1>
+      <div class="language-picker">
+        <span aria-hidden="true">🌐</span>
+        <select id="language" aria-label="Language" data-i18n-label="language">
+          <option value="en" lang="en">English</option>
+          <option value="ru" lang="ru">Русский</option>
+          <option value="ja" lang="ja">日本語</option>
+          <option value="cs" lang="cs">Čeština</option>
+        </select>
+      </div>
+    </div>
+    <nav aria-label="Sections" data-i18n-label="sections">
+      <a href="#training" data-i18n="training">Workout</a>
+      <a href="#history" data-i18n="history">History</a>
+      <a href="#progress" data-i18n="progress">Progress</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="training" aria-labelledby="training-title">
+      <h2 id="training-title" data-i18n="training">Workout</h2>
+      <form id="workout-form">
+        <label class="date-field"><span data-i18n="date">Date</span>
+          <input name="date" type="date" required>
+        </label>
+        <fieldset>
+          <legend data-i18n="reps">Reps per set</legend>
+          <p class="hint" id="skip-hint" data-i18n="skipHint">Leave skipped types blank.</p>
+          <div class="fields" id="repetition-fields"></div>
+        </fieldset>
+        <button type="submit" data-i18n="saveWorkout">Save workout</button>
+        <p class="feedback" id="workout-feedback" role="status"></p>
+      </form>
+
+      <form id="goal-form">
+        <fieldset>
+          <legend data-i18n="goals">Rep goals</legend>
+          <p class="hint" id="goal-hint" data-i18n="goalHint">Leave a field blank to remove its goal.</p>
+          <div class="fields" id="goal-fields"></div>
+        </fieldset>
+        <button class="secondary" type="submit" data-i18n="saveGoals">Save goals</button>
+        <p class="feedback" id="goal-feedback" role="status"></p>
+      </form>
+    </section>
+
+    <section id="history" aria-labelledby="history-title">
+      <h2 id="history-title" tabindex="-1" data-i18n="history">History</h2>
+      <div class="actions history-tools">
+        <button type="button" class="secondary" id="export-history" data-i18n="exportHistory">Download JSON</button>
+        <button type="button" class="secondary" id="import-history" data-i18n="importHistory">Import JSON</button>
+        <input type="file" id="history-file" accept=".json,application/json" hidden>
+      </div>
+      <p class="feedback" id="transfer-feedback" role="status"></p>
+      <ul id="workouts" class="workouts"></ul>
+      <p id="history-empty" class="hint" data-i18n="noWorkouts">No workouts yet.</p>
+      <p class="feedback" id="history-feedback" role="status"></p>
+    </section>
+
+    <section id="progress" aria-labelledby="progress-title">
+      <h2 id="progress-title" data-i18n="progress">Progress</h2>
+      <div id="summary" class="fields"></div>
+      <fieldset class="chart-field">
+        <legend data-i18n="pushupType">Push-up type</legend>
+        <div id="chart-type" class="fields"></div>
+      </fieldset>
+      <figure id="chart" hidden>
+        <figcaption class="hint" data-i18n="chartCaption">Reps by date</figcaption>
+        <svg id="chart-svg" viewBox="0 0 360 200" role="img" aria-labelledby="chart-title chart-description"></svg>
+      </figure>
+      <p id="chart-empty" class="hint" data-i18n="noResults">No results for this type yet.</p>
+    </section>
+  </main>
+</body>
+</html>

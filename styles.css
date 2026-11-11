@@ -1,0 +1,261 @@
+:root {
+  font-family: Inter, system-ui, sans-serif;
+  color: #f5f7fb;
+  color-scheme: dark;
+  background: #0a121e;
+  line-height: 1.5;
+  --muted: #becadd;
+  --border: #3b4860;
+  --accent: #ffab39;
+  --surface: #1c2739;
+  --input-background: #101b2b;
+  --input-border: #566783;
+  --error: #ffb4aa;
+}
+
+* { box-sizing: border-box; }
+
+body { margin: 0; }
+
+.page-header, main {
+  width: min(calc(100% - 32px), 800px);
+  margin-inline: auto;
+}
+
+.page-header { padding-block: 24px 16px; }
+h1, h2, h3, p, figure, dl, dd { margin: 0; }
+h1 { font-size: clamp(1.7rem, 5vw, 2.5rem); line-height: 1.15; }
+h2 { color: var(--accent); font-size: 1.45rem; margin-bottom: 16px; }
+h3 { font-size: 1rem; }
+
+nav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+main { padding-bottom: 28px; display: grid; gap: 16px; }
+
+section {
+  min-width: 0;
+  padding: clamp(16px, 4vw, 28px);
+  border: 1px solid #273348;
+  border-radius: 22px;
+  background: radial-gradient(ellipse at top right, #242b4b, #0d1725 68%);
+}
+
+form + form { border-top: 1px solid var(--border); margin-top: 20px; padding-top: 20px; }
+fieldset { padding: 0; margin: 14px 0; border: 0; min-width: 0; }
+legend { padding: 0; font-weight: 700; }
+.hint { color: var(--muted); font-size: .92rem; }
+.fields { display: grid; gap: 10px; margin-top: 8px; }
+
+label { display: grid; gap: 4px; font-weight: 600; }
+.date-field { max-width: 240px; }
+.chart-field { margin-top: 18px; }
+
+.chart-field label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.chart-field label:hover { border-color: var(--input-border); }
+
+.chart-field label:has(:checked) {
+  border-color: var(--accent);
+  background: #312a26;
+  color: var(--accent);
+}
+
+.chart-field input[type="radio"] {
+  flex: 0 0 18px;
+  width: 18px;
+  min-height: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  accent-color: var(--accent);
+}
+
+.chart-field label:has(:focus-visible) {
+  outline: 3px solid #ffd08a;
+  outline-offset: 3px;
+}
+
+.chart-field label:has(:focus-visible) input { outline: none; }
+
+input, select, button {
+  min-height: 44px;
+  font: inherit;
+  border-radius: 8px;
+}
+
+input, select {
+  width: 100%;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--input-border);
+  border-radius: 9px;
+  background: var(--input-background);
+  color: inherit;
+}
+
+button {
+  padding: 8px 14px;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #221609;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.secondary { border-color: #9a713e; background: #272d3c; color: #ffc16d; }
+.danger { border-color: #a25d61; background: var(--input-background); color: var(--error); }
+:focus-visible { outline: 3px solid #ffd08a; outline-offset: 3px; }
+
+.feedback { color: #98e7b6; }
+.feedback[data-error] { color: var(--error); }
+.feedback:not(:empty) { margin-top: 8px; }
+
+.workouts { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.workout, .metric {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.workout time, .metric h3 { color: var(--accent); font-weight: 700; }
+.workout p { margin: 4px 0 10px; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.history-tools { margin-bottom: 12px; }
+#transfer-feedback:not(:empty) { margin-bottom: 12px; }
+
+.metric dl { margin-top: 8px; }
+.metric dl div { display: flex; justify-content: space-between; gap: 8px; }
+.metric dt { color: var(--muted); }
+.metric dd { font-weight: 700; overflow-wrap: anywhere; text-align: right; min-width: 0; }
+
+figure, #chart-empty { margin-top: 12px; }
+figure {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+svg { display: block; width: 100%; max-width: 560px; height: auto; }
+svg text { fill: var(--muted); font-size: 11px; }
+.chart-grid { stroke: var(--border); }
+.chart-line { stroke: var(--accent); stroke-width: 2; fill: none; }
+.chart-point { fill: var(--accent); }
+
+@media (min-width: 600px) {
+  .fields { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+#training-title {
+  margin-bottom: 18px;
+  color: var(--accent);
+  font-size: clamp(1.85rem, 5vw, 2.5rem);
+  font-weight: 850;
+  line-height: 1.15;
+}
+
+#training form {
+  padding: clamp(12px, 3vw, 20px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+#training form + form { margin-top: 12px; }
+#training #goal-form fieldset { margin-top: 0; }
+#training .date-field { max-width: 100%; }
+#training .fields { margin-top: 12px; }
+
+#training .fields label {
+  grid-template-columns: minmax(0, 1fr) minmax(80px, 34%);
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #263248;
+}
+
+#training input[type="number"] {
+  padding-inline: 8px;
+  color: var(--accent);
+  font-size: 1.125rem;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+
+#training button {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 12px;
+}
+
+#training #workout-form button {
+  border-color: transparent;
+  background: linear-gradient(165deg, #ffb42c, #ff801d);
+  color: #221609;
+  font-weight: 800;
+}
+
+@media (min-width: 600px) {
+  #training .date-field { max-width: 240px; }
+  #training .fields label {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 10px;
+  }
+}
+
+.header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.language-picker {
+  position: relative;
+  flex: 0 0 44px;
+  min-height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  font-size: 1.25rem;
+}
+
+.language-picker select {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.language-picker:focus-within {
+  outline: 3px solid #ffd08a;
+  outline-offset: 3px;
+}
