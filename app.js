@@ -97,6 +97,30 @@ function localToday() {
   return `${today.getFullYear()}-${month}-${day}`;
 }
 
+// Keep stored dates in ISO format; display a fixed numeric date in every locale.
+function selectedDate() {
+  const match = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(dateInput.value);
+  if (!match) return '';
+  const [, day, month, year] = match;
+  const iso = `${year}-${month}-${day}`;
+  const parsed = new Date(`${iso}T00:00:00Z`);
+  return year !== '0000' && Number.isFinite(parsed.getTime()) &&
+    parsed.toISOString().slice(0, 10) === iso ? iso : '';
+}
+
+function setSelectedDate(iso) {
+  dateInput.value = iso.split('-').reverse().join('.');
+  dateInput.setCustomValidity('');
+}
+
+dateInput.addEventListener('input', () => {
+  // Insert separators while typing with the iPhone numeric keyboard.
+  const digits = dateInput.value.replace(/[^0-9]/g, '').slice(0, 8);
+  dateInput.value = [digits.slice(0, 2), digits.slice(2, 4), digits.slice(4)]
+    .filter(Boolean).join('.');
+  dateInput.setCustomValidity(selectedDate() ? '' : 'dd.mm.yyyy');
+});
+
 function element(tag, text) {
   const node = document.createElement(tag);
   if (text !== undefined) node.textContent = text;
@@ -138,14 +162,19 @@ function fillCounts(form, counts) {
 }
 
 function loadWorkoutFields() {
-  const workout = state.workouts.find(({ date }) => date === dateInput.value);
+  const workout = state.workouts.find(({ date }) => date === selectedDate());
   fillCounts(workoutForm, workout?.reps ?? {});
   showFeedback('workout-feedback', '');
 }
 
 workoutForm.addEventListener('submit', (event) => {
   event.preventDefault();
-  const date = dateInput.value;
+  const date = selectedDate();
+  if (!date) {
+    showFeedback('workout-feedback', 'invalidDate', true);
+    dateInput.focus();
+    return;
+  }
   const reps = readCounts(workoutForm);
   if (Object.keys(reps).length === 0) {
     showFeedback('workout-feedback', 'noReps', true);
@@ -237,7 +266,7 @@ historyFile.addEventListener('change', async () => {
   }
 
   const byDate = new Map(state.workouts.map((workout) => [workout.date, workout]));
-  const selectedBefore = byDate.get(dateInput.value);
+  const selectedBefore = byDate.get(selectedDate());
   const formCounts = readCounts(workoutForm);
   const hasDraft = types.some(({ id }) => formCounts[id] !== selectedBefore?.reps[id]);
   let added = 0;
@@ -262,7 +291,7 @@ historyFile.addEventListener('change', async () => {
   const workouts = [...byDate.values()].sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
   const counts = { added, updated };
   if (saveState({ ...state, workouts }, 'transfer-feedback', 'importDone', counts) &&
-    !hasDraft && byDate.get(dateInput.value) !== selectedBefore) {
+    !hasDraft && byDate.get(selectedDate()) !== selectedBefore) {
     loadWorkoutFields();
   }
 });
@@ -288,7 +317,7 @@ function renderHistory() {
     edit.className = 'secondary';
     edit.setAttribute('aria-label', translate('editDate', { date: formattedDate }));
     edit.addEventListener('click', () => {
-      dateInput.value = date;
+      setSelectedDate(date);
       loadWorkoutFields();
       dateInput.focus();
     });
@@ -300,7 +329,7 @@ function renderHistory() {
       if (!window.confirm(translate('removeConfirm', { date: formattedDate }))) return;
       const workouts = state.workouts.filter((workout) => workout.date !== date);
       if (saveState({ ...state, workouts }, 'history-feedback', 'workoutRemoved')) {
-        if (dateInput.value === date) loadWorkoutFields();
+        if (selectedDate() === date) loadWorkoutFields();
         document.querySelector('#history-title').focus();
       }
     });
@@ -426,7 +455,7 @@ for (const { id } of types) {
   label.append(radio, caption);
   chartType.append(label);
 }
-dateInput.value = localToday();
+setSelectedDate(localToday());
 loadWorkoutFields();
 fillCounts(goalForm, state.goals);
 let savedLanguage;

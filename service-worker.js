@@ -2,11 +2,11 @@
 
 // BEGIN RELEASE
 const release = {
-  "version": "e885081710be0fe886fa411daf5e2b54613dc1765ca027acbdedcee8bce7063b",
+  "version": "6c7f8598703b1788a30019064883fe75c96f6b08d1f3ba2de7ade529b090b5c7",
   "assets": {
-    "./": "001d9915edfcf47b77776d5fe3a3ea7e16870293e499e6818ee9516a1b57e73c",
-    "styles.css": "0c49ab7005b800fc0a7d25f5f743d7e262c23212fed4ff5fb5d980ee85df1013",
-    "app.js": "6b99e833250acfeb4e2b5ee82bee7cd36eec92ce768cdbfad30935f426ffa766",
+    "./": "feab51f8a1fee9a978e4ccf02569b86f90e5190b8da5ba6e9d5ff01fdc3484b1",
+    "styles.css": "c7af0a0350389a69c2af5e9c9839b1a46790d6e94417606a5518ee27c22bd83d",
+    "app.js": "63386ef10a39412095e7f7301624fef1834fbe0396a9786ba7c33c34399e5134",
     "translations.js": "b0c43b19d1a3fe0efb8301d27fedd2d0acf14080c172142ab8be3842b747a643",
     "manifest.webmanifest": "7549834c671b4b2ac02e396763662d6db25ca2dcd9ed2030860465ae7781e543",
     "icons/icon-192.png": "e1376962114fb45282344aba6d7afcf77e7fa21dc46479423b450a721c381e07",

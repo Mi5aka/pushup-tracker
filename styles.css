@@ -60,7 +60,7 @@ legend { padding: 0; font-weight: 700; }
 .fields { display: grid; gap: 10px; margin-top: 8px; }
 
 label { display: grid; gap: 4px; font-weight: 600; }
-.date-field { max-width: 240px; }
+.date-field { min-width: 0; max-width: 240px; }
 .chart-field { margin-top: 18px; }
 
 .chart-field label {
@@ -258,4 +258,9 @@ svg text { fill: var(--muted); font-size: 11px; }
 .language-picker:focus-within {
   outline: 3px solid #ffd08a;
   outline-offset: 3px;
+}
+
+.date-field input {
+  max-width: 100%;
+  font-variant-numeric: tabular-nums;
 }
