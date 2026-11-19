@@ -97,28 +97,32 @@ function localToday() {
   return `${today.getFullYear()}-${month}-${day}`;
 }
 
-// Keep stored dates in ISO format; display a fixed numeric date in every locale.
+// The native input handles date selection; its visible label has a fixed format.
 function selectedDate() {
-  const match = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(dateInput.value);
-  if (!match) return '';
-  const [, day, month, year] = match;
-  const iso = `${year}-${month}-${day}`;
-  const parsed = new Date(`${iso}T00:00:00Z`);
-  return year !== '0000' && Number.isFinite(parsed.getTime()) &&
-    parsed.toISOString().slice(0, 10) === iso ? iso : '';
+  return dateInput.value;
+}
+
+function updateDateDisplay() {
+  document.querySelector('#date-display').textContent = dateInput.value
+    ? dateInput.value.split('-').reverse().join('.')
+    : 'dd.mm.yyyy';
 }
 
 function setSelectedDate(iso) {
-  dateInput.value = iso.split('-').reverse().join('.');
-  dateInput.setCustomValidity('');
+  dateInput.value = iso;
+  updateDateDisplay();
 }
 
-dateInput.addEventListener('input', () => {
-  // Insert separators while typing with the iPhone numeric keyboard.
-  const digits = dateInput.value.replace(/[^0-9]/g, '').slice(0, 8);
-  dateInput.value = [digits.slice(0, 2), digits.slice(2, 4), digits.slice(4)]
-    .filter(Boolean).join('.');
-  dateInput.setCustomValidity(selectedDate() ? '' : 'dd.mm.yyyy');
+dateInput.addEventListener('input', updateDateDisplay);
+dateInput.addEventListener('change', updateDateDisplay);
+dateInput.addEventListener('click', () => {
+  if (typeof dateInput.showPicker === 'function') {
+    try {
+      dateInput.showPicker();
+    } catch {
+      // Browsers without picker API access retain their native input behavior.
+    }
+  }
 });
 
 function element(tag, text) {
